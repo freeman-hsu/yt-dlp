@@ -89,7 +89,7 @@ class FFmpegPostProcessor(PostProcessor):
         return FFmpegPostProcessor.get_version_and_features(downloader)[0]
 
     def _determine_executables(self):
-        programs = ['avprobe', 'avconv', 'ffmpeg', 'ffprobe']
+        programs = ['avprobe', 'avconv', 'ffmpeg', 'ffprobe', 'libffmpeg.bin.so', 'libffprobe.bin.so']
 
         def get_ffmpeg_version(path, prog):
             out = _get_exe_version_output(path, ['-bsfs'])
@@ -139,7 +139,7 @@ class FFmpegPostProcessor(PostProcessor):
                 basename = os.path.splitext(os.path.basename(location))[0]
                 basename = next((p for p in programs if basename.startswith(p)), 'ffmpeg')
                 dirname = os.path.dirname(os.path.abspath(location))
-                if basename in ('ffmpeg', 'ffprobe'):
+                if basename in ('ffmpeg', 'ffprobe', 'libffmpeg.bin.so', 'libffprobe.bin.so'):
                     prefer_ffmpeg = True
 
             self._paths = dict(
@@ -152,18 +152,18 @@ class FFmpegPostProcessor(PostProcessor):
             get_ffmpeg_version(self._paths[p], p)
 
         if prefer_ffmpeg is False:
-            prefs = ('avconv', 'ffmpeg')
+            prefs = ('avconv', 'ffmpeg', 'libffmpeg.bin.so')
         else:
-            prefs = ('ffmpeg', 'avconv')
+            prefs = ('libffmpeg.bin.so', 'ffmpeg', 'avconv')
         for p in prefs:
             if self._versions[p]:
                 self.basename = p
                 break
 
         if prefer_ffmpeg is False:
-            prefs = ('avprobe', 'ffprobe')
+            prefs = ('avprobe', 'ffprobe', 'libffprobe.bin.so')
         else:
-            prefs = ('ffprobe', 'avprobe')
+            prefs = ('libffprobe.bin.so', 'ffprobe', 'avprobe')
         for p in prefs:
             if self._versions[p]:
                 self.probe_basename = p
@@ -303,7 +303,7 @@ class FFmpegPostProcessor(PostProcessor):
 
         cmd = [encodeFilename(self.executable, True), encodeArgument('-y')]
         # avconv does not have repeat option
-        if self.basename == 'ffmpeg':
+        if self.basename == 'ffmpeg' or self.basename == 'libffmpeg.bin.so':
             cmd += [encodeArgument('-loglevel'), encodeArgument('repeat+info')]
 
         def make_args(file, args, name, number):
