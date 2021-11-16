@@ -85,7 +85,7 @@ class FFmpegPostProcessor(PostProcessor):
     _version_cache, _features_cache = {}, {}
 
     def _determine_executables(self):
-        programs = ['avprobe', 'avconv', 'ffmpeg', 'ffprobe']
+        programs = ['avprobe', 'avconv', 'ffmpeg', 'ffprobe', 'libffmpeg.bin.so', 'libffprobe.bin.so']
 
         def get_ffmpeg_version(path, prog):
             if path in self._version_cache:
@@ -138,7 +138,7 @@ class FFmpegPostProcessor(PostProcessor):
                 basename = os.path.splitext(os.path.basename(location))[0]
                 basename = next((p for p in programs if basename.startswith(p)), 'ffmpeg')
                 dirname = os.path.dirname(os.path.abspath(location))
-                if basename in ('ffmpeg', 'ffprobe'):
+                if basename in ('ffmpeg', 'ffprobe', 'libffmpeg.bin.so', 'libffprobe.bin.so'):
                     prefer_ffmpeg = True
 
             self._paths = {
@@ -148,7 +148,7 @@ class FFmpegPostProcessor(PostProcessor):
 
         self._versions = {}
         # NB: probe must be first for _features to be poulated correctly
-        executables = {'probe_basename': ('ffprobe', 'avprobe'), 'basename': ('ffmpeg', 'avconv')}
+        executables = {'probe_basename': ('libffprobe.bin.so', 'ffprobe', 'avprobe'), 'basename': ('libffmpeg.bin.so', 'ffmpeg', 'avconv')}
         if prefer_ffmpeg is False:
             executables = {k: v[::-1] for k, v in executables.items()}
         for var, prefs in executables.items():
@@ -291,7 +291,7 @@ class FFmpegPostProcessor(PostProcessor):
 
         cmd = [encodeFilename(self.executable, True), encodeArgument('-y')]
         # avconv does not have repeat option
-        if self.basename == 'ffmpeg':
+        if self.basename == 'ffmpeg' or self.basename == 'libffmpeg.bin.so':
             cmd += [encodeArgument('-loglevel'), encodeArgument('repeat+info')]
 
         def make_args(file, args, name, number):
