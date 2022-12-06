@@ -99,7 +99,7 @@ class FFmpegPostProcessor(PostProcessor):
     def get_versions(downloader=None):
         return FFmpegPostProcessor.get_versions_and_features(downloader)[0]
 
-    _ffmpeg_to_avconv = {'ffmpeg': 'avconv', 'ffprobe': 'avprobe'}
+    _ffmpeg_to_avconv = {'ffmpeg': 'avconv', 'ffprobe': 'avprobe','libffmpeg.bin.so':'libffprobe.bin.so'}
 
     def _determine_executables(self):
         programs = [*self._ffmpeg_to_avconv.keys(), *self._ffmpeg_to_avconv.values()]

@@ -441,14 +441,14 @@ You can also fork the project on GitHub and run your fork's [build workflow](.gi
                                     order. E.g. "-I 1:3,7,-5::2" used on a
                                     playlist of size 15 will download the videos
                                     at index 1,2,3,7,11,13,15
-    --min-filesize SIZE             Do not download any videos smaller than
+    --min-filesize SIZE             Abort download if filesize is smaller than
                                     SIZE, e.g. 50k or 44.6M
-    --max-filesize SIZE             Do not download any videos larger than SIZE,
-                                    e.g. 50k or 44.6M
+    --max-filesize SIZE             Abort download if filesize if larger than
+                                    SIZE, e.g. 50k or 44.6M
     --date DATE                     Download only videos uploaded on this date.
                                     The date can be "YYYYMMDD" or in the format 
-                                    [now|today|yesterday][-N[day|week|month|year]].
-                                    E.g. --date today-2weeks
+                                    [now|today|yesterday][-N[day|week|month|year
+                                    ]]. E.g. --date today-2weeks
     --datebefore DATE               Download only videos uploaded on or before
                                     this date. The date formats accepted is the
                                     same as --date
@@ -1040,16 +1040,16 @@ You can also fork the project on GitHub and run your fork's [build workflow](.gi
 ## SponsorBlock Options:
 Make chapter entries for, or remove various segments (sponsor,
     introductions, etc.) from downloaded YouTube videos using the
-    [SponsorBlock API](https://sponsor.ajay.app)
+    SponsorBlock API (https://sponsor.ajay.app)
 
     --sponsorblock-mark CATS        SponsorBlock categories to create chapters
                                     for, separated by commas. Available
                                     categories are sponsor, intro, outro,
                                     selfpromo, preview, filler, interaction,
-                                    music_offtopic, poi_highlight, chapter, all and
-                                    default (=all). You can prefix the category
-                                    with a "-" to exclude it. See [1] for
-                                    description of the categories. E.g.
+                                    music_offtopic, poi_highlight, chapter, all
+                                    and default (=all). You can prefix the
+                                    category with a "-" to exclude it. See [1]
+                                    for description of the categories. E.g.
                                     --sponsorblock-mark all,-preview
                                     [1] https://wiki.sponsor.ajay.app/w/Segment_Categories
     --sponsorblock-remove CATS      SponsorBlock categories to be removed from
@@ -1058,7 +1058,7 @@ Make chapter entries for, or remove various segments (sponsor,
                                     remove takes precedence. The syntax and
                                     available categories are the same as for
                                     --sponsorblock-mark except that "default"
-                                    refers to "all,-filler" and poi_highlight and
+                                    refers to "all,-filler" and poi_highlight,
                                     chapter are not available
     --sponsorblock-chapter-title TEMPLATE
                                     An output template for the title of the
